@@ -3,7 +3,7 @@
     ob_start();
 
     // Handle health check requests without authentication
-    if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'curl') !== false) {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['REQUEST_URI'] === '/') {
         header('Content-Type: application/json');
         http_response_code(200);
         echo json_encode(['status' => 'ok', 'timestamp' => date('c'), 'service' => 'FTMS']);

@@ -26,7 +26,8 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html
 RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf \
     && sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-    && sed -ri -e 's/^Listen 80$/Listen 0.0.0.0:80/' /etc/apache2/ports.conf
+    && sed -ri -e 's/^Listen 80$/Listen 0.0.0.0:80/' /etc/apache2/ports.conf \
+    && echo "Listen 0.0.0.0:80" >> /etc/apache2/ports.conf
 
 WORKDIR /var/www/html
 
@@ -46,5 +47,5 @@ RUN mkdir -p uploads/fuel_receipts uploads/pod uploads/vehicle_documents \
 
 EXPOSE 80
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-    CMD curl -fsS http://localhost/ || exit 1
+# Start Apache in foreground
+CMD ["apache2-foreground"]
