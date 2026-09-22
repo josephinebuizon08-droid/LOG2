@@ -15,7 +15,7 @@ FROM php:8.2-apache AS app
 # plus mbstring/curl which PHPMailer and the Gemini/route-optimization
 # calls need.
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libpq-dev libzip-dev unzip curl \
+    && apt-get install -y --no-install-recommends libpq-dev libzip-dev unzip curl libonig-dev \
     && docker-php-ext-install pgsql mbstring \
     && a2enmod rewrite headers \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
