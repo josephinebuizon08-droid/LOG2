@@ -122,4 +122,5 @@ BS Information Technology
 
 Capstone Project
 
-Bestlink College of the Philippines
+Bestlink College of the Philippines# LOG2
+FMTS
