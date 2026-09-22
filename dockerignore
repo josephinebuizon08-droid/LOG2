@@ -1,0 +1,15 @@
+.git
+.env
+.env.*
+node_modules
+npm-debug.log*
+uploads/
+assets/uploads/
+database/*.sql
+*.sql
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+README.md
+DEPLOYMENT.md

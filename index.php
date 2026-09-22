@@ -20,8 +20,12 @@
     ?>
 
     <?php
+        // Show errors on screen only outside production. Set APP_ENV=production
+        // (or leave APP_ENV unset) on the live server to keep errors out of the
+        // rendered page while still logging them server-side.
         error_reporting(E_ALL);
-        ini_set('display_errors', 1);
+        ini_set('display_errors', getenv('APP_ENV') === 'production' ? '0' : '1');
+        ini_set('log_errors', '1');
     ?>
 
         <?php include 'includes/header.php'; ?>
