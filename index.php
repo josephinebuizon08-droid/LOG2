@@ -2,14 +2,6 @@
    
     ob_start();
 
-    // Handle health check requests without authentication
-    if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['REQUEST_URI'] === '/') {
-        header('Content-Type: application/json');
-        http_response_code(200);
-        echo json_encode(['status' => 'ok', 'timestamp' => date('c'), 'service' => 'FTMS']);
-        exit;
-    }
-
     session_start();
 
          header("Cache-Control: no-cache, no-store, must-revalidate");
@@ -19,7 +11,10 @@
 
       if(!isset($_SESSION['user_id'])) { 
 
-          header("Location: landing.php");
+          // Serve the landing page's content directly at "/" instead of
+          // redirecting to /landing.php -- keeps the URL as just
+          // log2.priority-handling.com in the browser's address bar.
+          require __DIR__ . '/landing.php';
           exit();
       } 
 
