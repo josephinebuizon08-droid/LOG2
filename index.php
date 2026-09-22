@@ -23,6 +23,7 @@
     ?>
 
     <?php
+         //new
         // Show errors on screen only outside production. Set APP_ENV=production
         // (or leave APP_ENV unset) on the live server to keep errors out of the
         // rendered page while still logging them server-side.
