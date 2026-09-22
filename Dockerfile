@@ -4,7 +4,7 @@
 FROM node:20-alpine AS assets
 WORKDIR /build
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install --legacy-peer-deps
 COPY src ./src
 RUN npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --minify
 
