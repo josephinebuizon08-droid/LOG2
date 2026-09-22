@@ -25,9 +25,10 @@ RUN apt-get update \
 ENV APACHE_DOCUMENT_ROOT=/var/www/html
 RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf \
     && sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
-    && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-    && sed -ri -e 's/^Listen 80$/Listen 0.0.0.0:80/' /etc/apache2/ports.conf \
-    && echo "Listen 0.0.0.0:80" >> /etc/apache2/ports.conf
+    && echo "ServerName localhost" >> /etc/apache2/apache2.conf
+# NOTE: we deliberately do NOT hard-code the Listen port here. HostForge
+# assigns a dynamic $PORT at container runtime, so binding to it has to
+# happen in docker-entrypoint.sh, not at build time.
 
 WORKDIR /var/www/html
 
@@ -45,7 +46,11 @@ RUN mkdir -p uploads/fuel_receipts uploads/pod uploads/vehicle_documents \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 750 uploads
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# EXPOSE is documentation only (doesn't force the actual bind port) -- the
+# real port comes from $PORT at runtime, read inside docker-entrypoint.sh.
 EXPOSE 80
 
-# Start Apache in foreground
-CMD ["apache2-foreground"]
+ENTRYPOINT ["docker-entrypoint.sh"]
