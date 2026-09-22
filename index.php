@@ -2,6 +2,14 @@
    
     ob_start();
 
+    // Handle health check requests without authentication
+    if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'curl') !== false) {
+        header('Content-Type: application/json');
+        http_response_code(200);
+        echo json_encode(['status' => 'ok', 'timestamp' => date('c'), 'service' => 'FTMS']);
+        exit;
+    }
+
     session_start();
 
          header("Cache-Control: no-cache, no-store, must-revalidate");
